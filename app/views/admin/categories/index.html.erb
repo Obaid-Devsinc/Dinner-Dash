@@ -24,7 +24,7 @@
           <% @categories.each do |category| %>
             <tr id="<%= dom_id(category) %>">
               <td class="px-6 py-2">
-                <%= image_tag(category.image.attached? ? url_for(category.image) : 'unknown.jpeg', alt: category.name, class: 'w-12 h-12 object-cover rounded') %>
+                <%= image_tag(category.image.attached? ? url_for(category.image) : 'unknown.jpeg', alt: category.name, class: 'w-10 h-10 object-cover rounded-sm') %>
               </td>
               <td class="px-6 py-2"><%= category.name %></td>
               <td class="pl-14 py-2"><%= category.items_count %></td>
