@@ -2,8 +2,8 @@ class OrdersController < ApplicationController
   include LoadCart
 
   before_action :authenticate_user!
-  before_action :check_cart, only: [:new, :create]
-  before_action :set_order_params, only: [:create]
+  before_action :check_cart, only: [ :new, :create ]
+  before_action :set_order_params, only: [ :create ]
 
   def index
     @orders = current_user.orders
