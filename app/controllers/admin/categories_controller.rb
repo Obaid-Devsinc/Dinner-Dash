@@ -24,7 +24,7 @@ class Admin::CategoriesController < Admin::BaseController
   end
 
   def edit
-  end
+   end
 
   def update
     if @category.update(category_params)

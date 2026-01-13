@@ -1,10 +1,15 @@
-<% content_for :title, "Update Profile | Dinner Dash" %>
+<% content_for :title, 'Update Profile | Dinner Dash' %>
 
 <section class="h-auto flex justify-center items-center py-22">
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "w-[90%] sm:w-full max-w-md mx-auto bg-white p-10 rounded-lg shadow-lg" }) do |f| %>
     <h2 class="text-2xl font-bold text-center pb-10 bruno">Update Profile</h2>
 
     <%= render 'devise/shared/error_messages', resource: resource %>
+
+    <div class="mb-4 text-[0.8rem]">
+      <%= f.label :image, 'Profile Image', class: 'block text-gray-700 font-medium mb-2' %>
+      <%= f.file_field :image, class: 'w-full border border-gray-300 rounded-lg p-2' %>
+    </div>
 
     <div class="mb-4 text-[0.8rem]">
       <%= f.label :name, class: 'block text-gray-700 font-medium mb-2' %>
@@ -61,7 +66,7 @@
                   method: :delete,
                   data: {
                     confirm: 'Are you sure tou want to cancel you account?',
-                    turbo_confirm: 'Are you sure tou want to cancel you account?',
+                    turbo_confirm: 'Are you sure tou want to cancel you account?'
                   },
                   class: 'w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors'
       %>
