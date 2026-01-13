@@ -1,0 +1,10 @@
+<% if @item.destroyed? %>
+  <%= turbo_stream.remove @item %>
+  <%= turbo_stream.update "flash_messages" do %>
+    <%= render 'shared/flash' %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "flash_messages" do %>
+    <%= render 'shared/flash' %>
+  <% end %>
+<% end %>

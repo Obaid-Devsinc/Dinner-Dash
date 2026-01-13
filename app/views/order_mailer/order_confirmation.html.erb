@@ -1,0 +1,20 @@
+<h2>Thank you for your order, <%= @order.first_name %>!</h2>
+
+<p>Your order <strong>#<%= @order.id %></strong> has been successfully created.</p>
+
+<p><strong>Status:</strong> <%= @order.status.capitalize %></p>
+
+<h3>Order Details:</h3>
+<ul>
+  <% @order.order_items.each do |oi| %>
+    <li>
+      <%= oi.item.title %> - Quantity: <%= oi.quantity %>
+    </li>
+  <% end %>
+</ul>
+
+<p><strong>Total Amount:</strong> $<%= @order.total_amount %></p>
+
+<p>We will notify you when your order status is updated.</p>
+
+<p>Thank you for choosing <strong>Dinner Dash</strong>!</p>

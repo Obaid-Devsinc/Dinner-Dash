@@ -1,0 +1,47 @@
+<div data-controller="sidebar">
+  <div class="w-screen h-[70px] bg-gray-900 mb-4 lg:hidden flex justify-between items-center">
+    <div class="ml-8">
+      <%= image_tag 'logo.png', alt: 'Dinner Dash', width: '60' %>
+    </div>
+
+    <button data-action="click->sidebar#toggle" class="lg:hidden mr-8 py-2 text-white text-base cursor-pointer">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <aside data-sidebar-target="sidebar" class="w-60 bg-gray-900 text-gray-200 flex flex-col fixed left-0 top-0 h-full transform lg:translate-x-0 -translate-x-full transition-transform duration-300 z-50">
+    <div class="bruno flex flex-col items-center justify-center px-6 py-6 text-lg font-bold border-b border-gray-700">
+      <%= image_tag 'logo.png', alt: 'Dinner Dash', width: '60' %>
+      Dinner Dash
+    </div>
+
+    <nav class="flex-1 px-4 py-4 space-y-1">
+      <%= link_to admin_dashboard_path, class: "flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 text-white" do %>
+        <i class="fa-regular fa-chart-bar mr-3 text-sm"></i>
+        <span>Dashboard</span>
+      <% end %>
+
+      <%= link_to admin_items_path, class: "flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition" do %>
+        <i class="fa-regular fa-square-check mr-3 text-sm"></i>
+        <span>Products</span>
+      <% end %>
+
+      <%= link_to admin_categories_path, class: "flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition" do %>
+        <i class="fa-regular fa-rectangle-list mr-3 text-sm"></i>
+        <span>Categories</span>
+      <% end %>
+
+      <%= link_to admin_orders_path, class: "flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition" do %>
+        <i class="fa-regular fa-file-lines mr-3 text-sm"></i>
+        <span>Orders</span>
+      <% end %>
+
+      <%= link_to destroy_user_session_path,
+            data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+            class: "flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition" do %>
+        <i class="fa-regular fa-circle-right mr-3 text-sm"></i>
+        <span>Logout</span>
+      <% end %>
+    </nav>
+  </aside>
+</div>

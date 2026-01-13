@@ -1,0 +1,26 @@
+<%= form_with model: [:admin, @category], local: true do |f| %>
+
+ <%= render "shared/admin/error", record: @category %>
+
+  <div class="mb-4">
+    <%= f.label :name, class: "block text-gray-700 font-semibold mb-1" %>
+    <%= f.text_field :name, class: "w-full border border-gray-300 px-4 py-3 rounded-lg" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :image, class: "block text-gray-700 font-semibold mb-1" %>
+    <%= f.file_field :image, class: "w-full border border-gray-300 px-4 py-3 rounded-lg" %>
+
+    <% if @category.image.attached? %>
+      <div class="mt-2">
+        <%= image_tag url_for(@category.image), class: "w-20 h-20 rounded object-cover" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-6">
+    <%= f.submit (@category.new_record? ? "Create Category" : "Update Category"),
+      class: "bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700" %>
+  </div>
+
+<% end %>

@@ -1,0 +1,16 @@
+<%= turbo_stream.replace "cart_count" do %>
+ <li>
+<%= link_to cart_path, class: "hover:text-gray-300 transition relative" do %>
+  Cart
+  <% if cart_count > 0 %>
+    <span class="absolute -top-2 -right-4 bg-red-600 text-white text-xs font-semibold w-6 h-6 rounded-full flex items-center justify-center">
+      <%= cart_count %>
+    </span>
+  <% end %>
+<% end %>
+        </li>
+<% end %>
+
+<%= turbo_stream.update "flash_messages" do %>
+  <%= render 'shared/flash' %>
+<% end %>

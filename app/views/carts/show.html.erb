@@ -1,0 +1,25 @@
+<% content_for :title, 'Cart | Dinner Dash' %>
+
+<%= render 'shared/header', text: 'Cart Items' %>
+
+<section class="min-h-screen py-8 sm:py-12 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto">
+    <% if @cart_items.any?  %>
+      <div id="cart_items_container" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-3">
+          <% @cart_items.each do |item| %>
+            <%= render 'cart_item', item: item %>
+          <%end%>
+        </div>
+
+        <div id="order_summary_container">
+          <%= render 'cart_summary' %>
+        </div>
+      </div>
+    <% else %>
+      <div class="flex justify-center">
+        <%= render 'shared/fallback', text: 'No Items in the cart' %>
+      </div>
+    <% end %>
+  </div>
+</section>

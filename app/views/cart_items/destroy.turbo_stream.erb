@@ -1,0 +1,38 @@
+<%= turbo_stream.remove "cart_item_#{params[:id]}" %>
+
+<% if @cart_items.any? %>
+  <% @cart_items.each do |item| %>
+    <%= turbo_stream.replace "cart_item_#{item[:product].id}" do %>
+      <%= render  "carts/cart_item", item: item  %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "cart_items_container" do %>
+    <div class="flex justify-center">
+      <%= render 'shared/fallback', text: 'No Items in the cart' %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "cart_count" do %>
+  <li class="relative flex items-center gap-3" id="cart_count">
+    <%= link_to cart_path, class: "hidden md:block hover:text-gray-300 transition relative" do %>
+      Cart
+      <% if @cart_items.sum { |i| i[:quantity] } > 0 %>
+        <span class="absolute -top-2 -right-4 bg-red-600 text-white text-xs font-semibold w-6 h-6 rounded-full flex items-center justify-center">
+          <%= @cart_items.sum { |i| i[:quantity] } %>
+        </span>
+      <% end %>
+    <% end %>
+  </li>
+<% end %>
+
+<%= turbo_stream.replace "order_summary_container" do %>
+ <div id="order_summary_container">
+        <%= render 'carts/cart_summary' %>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "flash_messages" do %>
+  <%= render 'shared/flash' %>
+<% end %>

@@ -1,0 +1,70 @@
+<% content_for :title, "#{@item.title} | Dinner Dash" %>
+
+<section class="min-h-screen flex items-center px-4 py-8 sm:py-12">
+  <div class="max-w-6xl w-full mx-auto flex flex-col md:flex-row gap-8 md:gap-12">
+    <div class="w-full md:w-1/2 flex justify-center">
+      <div class="relative w-[95%] max-w-sm">
+        <div class="aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50">
+          <%= image_tag(@item.image.attached? ? url_for(@item.image) : 'unknown.jpeg', alt: @item.title, class: 'w-full h-full object-cover transition-transform duration-500 hover:scale-105') %>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full md:w-1/2 flex flex-col gap-6">
+      <div>
+        <h1 class="text-2xl flex items-center gap-3 sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+          <%= @item.title %>
+          <p class="text-[0.8rem] font-normal">( <%= @item.category.name if @item.category %> )</p>
+        </h1>
+
+        <div class="flex items-center gap-2">
+          <div class="flex">
+            <% 4.times do %>
+              <i class="fa-solid fa-star text-yellow-300 text-[0.7rem]"></i>
+            <% end %>
+            <i class="fa-solid fa-star text-gray-300 text-[0.7rem]"></i>
+          </div>
+          <span class="text-sm text-gray-600">4.0 • 128 reviews</span>
+        </div>
+      </div>
+
+      <div class="flex items-baseline gap-3">
+        <p class="text-3xl sm:text-4xl font-bold text-gray-900">$<%= @item.price %></p>
+        <span class="text-lg text-gray-500 line-through">$<%= (@item.price.to_f * 1.2).round %></span>
+        <span class="px-2 py-1 bg-red-50 text-red-700 text-sm font-medium rounded"> Save 20% </span>
+      </div>
+
+      <div class="pt-4 border-t border-gray-200">
+        <p class="text-gray-700 leading-relaxed"><%= @item.description %></p>
+
+        <div class="mt-4 space-y-2">
+          <div class="flex items-center gap-2 text-gray-600">
+            <i class="fas fa-check text-green-500"></i>
+            <span>30-day return policy for everyone</span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-600">
+            <i class="fas fa-check text-green-500"></i>
+            <span>Free shipping on orders over $50</span>
+          </div>
+        </div>
+      </div>
+
+      <div data-controller="quantity" class="pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div class="w-[130px] flex items-center border border-gray-300 rounded-lg">
+            <button data-action="click->quantity#decrement" class="px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700">-</button>
+            <input type="text" data-quantity-target="input" value="1" min="1" class="w-12 text-center border-x border-gray-300 py-2" readonly />
+            <button data-action="click->quantity#increment" class="px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700">+</button>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <%= button_to cart_items_path(id: @item.id), method: :post, class: 'w-full bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition-colors font-medium cursor-pointer' do %>
+            <input type="hidden" name="quantity" value="1" data-quantity-target="hidden" />
+            Add to Cart
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

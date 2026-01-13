@@ -1,0 +1,35 @@
+<% content_for :title, "Home | Dinner Dash" %>
+
+<section>
+  <main class="relative w-full h-[70vh] flex items-center justify-center bg-gray-800">
+    <div class="absolute inset-0">
+      <%= image_tag 'ecommerce_bg.avif', alt: 'E-commerce Banner', class: 'w-full h-full object-cover' %>
+      <div class="absolute inset-0 bg-black opacity-50"></div>
+    </div>
+
+    <div class="relative z-10 text-center text-white px-4">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4">
+        Discover Favorite Meals <br />
+        With Dinner Dash
+      </h1>
+      <p class="text-lg md:text-xl mb-6">Fresh, delicious, and delivered right to your door.</p>
+      <%= link_to 'Shop Now', items_path, class: 'bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-sm md:text-base transition-colors' %>
+    </div>
+  </main>
+
+  <div class="w-full h-auto lg:h-[45vh] flex justify-center items-center">
+    <div class="w-[90%] xl:w-[70%] h-auto flex flex-wrap justify-center sm:justify-around pt-5 xl:pt-0">
+      <%= render partial: 'shared/category', collection: @categories %>
+    </div>
+  </div>
+
+  <div class="w-full h-auto flex justify-center items-center py-4">
+    <div class="w-[90%] xl:w-[65%] flex flex-wrap justify-around gap-2">
+      <% if @items.any?  %>
+        <%= render partial: 'shared/item', collection: @items %>
+      <% else  %>
+        <%= render 'shared/fallback', text: 'No product found' %>
+      <% end %>
+    </div>
+  </div>
+</section>

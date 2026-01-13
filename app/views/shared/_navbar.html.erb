@@ -1,0 +1,79 @@
+<nav class="bg-black text-white relative" data-controller="navbar">
+  <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-3">
+    <div class="flex items-center gap-6">
+      <%= image_tag 'logo.png', alt: 'Dinner Dash', width: '60' %>
+
+      <ul class="hidden md:flex items-center gap-8 text-sm">
+        <li><%= link_to 'Home', root_path, class: 'hover:text-gray-300 transition' %></li>
+        <li><%= link_to 'Products', items_path, class: 'hover:text-gray-300 transition' %></li>
+        <li id="cart_count">
+          <%= link_to cart_path, class: "block hover:text-gray-300 transition relative" do %>
+            Cart
+            <% if cart_count > 0 %>
+              <span class="absolute -top-2 -right-4 bg-red-600 text-white text-xs font-semibold w-6 h-6 rounded-full flex items-center justify-center">
+                <%= cart_count %>
+              </span>
+            <% end %>
+          <% end %>
+        </li>
+
+        <% if user_signed_in? %>
+          <li><%= link_to 'Orders', orders_path, class: 'hidden md:block hover:text-gray-300 transition' %></li>
+        <% end %>
+
+        <% if user_signed_in? && current_user.role === "admin" %>
+          <li><%= link_to 'Admin', admin_dashboard_path, class: 'hidden md:block hover:text-gray-300 transition' %></li>
+        <% end %>
+
+        <%= form_with url: items_path, method: :get, class: "flex items-center text-[0.8rem]" do %>
+          <%= text_field_tag :query, params[:query], placeholder: 'Search products...', class: 'px-3 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-800' %>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="flex items-center gap-6 text-[0.8rem]">
+      <% if user_signed_in? %>
+        <%= link_to profile_path do %>
+          <div class="hidden md:flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full overflow-hidden">
+              <%= image_tag(current_user.image.attached? ? url_for(current_user.image) : 'unknown.jpeg', alt: current_user.name) %>
+            </div>
+            <div class="text-[0.8rem]">
+              <p><%= current_user.name %></p>
+              <p><%= current_user.email %></p>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <%= link_to 'Login', new_user_session_path, class: 'hidden md:block hover:text-gray-300 transition text-sm' %>
+      <% end %>
+
+      <button class="md:hidden flex items-center px-3 py-2 border rounded text-white border-white" data-action="click->navbar#toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <ul class="md:hidden hidden_custom flex items-center flex-col gap-4 px-4 pb-4 text-sm" data-navbar-target="menu">
+    <li><%= link_to 'Home', root_path, class: 'hover:text-gray-300 transition' %></li>
+    <li><%= link_to 'Products', items_path, class: 'hover:text-gray-300 transition' %></li>
+    <li><%= link_to 'Cart', cart_path, class: 'hover:text-gray-300 transition relative' %></li>
+    <% if user_signed_in? && current_user.role === "admin" %>
+      <li><%= link_to 'Admin', admin_dashboard_path, class: 'hover:text-gray-300 transition relative' %></li>
+    <% end %>
+
+    <% if user_signed_in? %>
+      <li><%= link_to 'Orders', orders_path, class: 'block hover:text-gray-300 transition' %></li>
+      <li><%= link_to 'Profile', profile_path, class: 'hover:text-gray-300 transition' %></li>
+      <li>
+        <%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'hover:text-red-500 transition' %>
+      </li>
+    <% else %>
+      <li><%= link_to 'Login', new_user_session_path, class: 'hover:text-gray-300 transition' %></li>
+    <% end %>
+
+    <%= form_with url: items_path, method: :get, class: "flex items-center text-[0.8rem]" do %>
+      <%= text_field_tag :query, params[:query], placeholder: 'Search products...', class: 'px-3 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-800' %>
+    <% end %>
+  </ul>
+</nav>

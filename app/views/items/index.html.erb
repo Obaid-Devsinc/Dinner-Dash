@@ -1,0 +1,31 @@
+<% content_for :title, "Menu Items | Dinner Dash" %>
+
+<main class="relative w-full h-[30vh] flex items-center justify-center bg-gray-800">
+  <div class="absolute inset-0">
+    <%= image_tag 'sub_ecommerce_bg.jpeg', alt: 'E-commerce Banner', class: 'w-full h-full object-cover' %>
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+  </div>
+
+  <div class="relative z-10 text-center text-white px-4">
+    <h1 class="text-3xl sm:text-4xl md:text-[40px] font-extrabold mb-4">
+      <% if params[:query].present? %>
+        Results For "<%= params[:query] %>"
+      <% else %>
+        Menu Items
+      <% end %>
+    </h1>
+  </div>
+</main>
+
+<div class="w-full min-h-[80vh] max-h-auto flex flex-wrap justify-center mt-10">
+  <% if @items.any? %>
+    <div class="w-[90%] xl:w-[65%] flex flex-wrap justify-around gap-2">
+      <%= render partial: 'shared/item', collection: @items %>
+    </div>
+    <div class="w-full flex justify-center mt-8 text-sm">
+      <%= paginate @items %>
+    </div>
+  <% else %>
+    <%= render 'shared/fallback', text: 'No product found' %>
+<% end %>
+</div>

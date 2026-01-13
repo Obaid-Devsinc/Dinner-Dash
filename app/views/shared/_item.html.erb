@@ -1,0 +1,28 @@
+<div class="group grow lg:grow-0 w-[47%] pb-4 sm:w-[270px] sm:h-72 border border-gray-300 rounded-xl relative overflow-hidden">
+  <div class="w-full">
+    <%= link_to item_path(item) do %>
+      <div class="w-full sm:h-[200px] overflow-hidden">
+        <%= image_tag(item.image.attached? ? url_for(item.image) : 'unknown.jpeg', alt: item.title, class: 'h-full w-full hover:scale-110 transition-transform duration-300') %>
+      </div>
+    <% end %>
+    <div class="flex justify-between items-center px-3 pt-5">
+      <div class="text-sm">
+        <p class="text-[#4D4D4D]">
+          <%= item.title %>
+        </p>
+        <p>$ <%= item.price %></p>
+        <div class="flex pt-1">
+          <% 5.times do %>
+            <i class="fa-solid fa-star text-yellow-300 text-[0.5rem]"></i>
+          <% end %>
+        </div>
+      </div>
+      <%= button_to cart_items_path(id: item.id), method: :post, data: { turbo_stream: true } do %>
+        <div class="bg-[#F2F2F2] w-[35px] h-[35px] sm:w-12 sm:h-11 rounded-full flex justify-center items-center cursor-pointer">
+          <%= image_tag 'bag.avif', alt: 'Cart Icon', class: 'w-5 cursor-pointer' %>
+        </div>
+        <%= hidden_field_tag :quantity, 1 %>
+      <% end %>
+    </div>
+  </div>
+</div>

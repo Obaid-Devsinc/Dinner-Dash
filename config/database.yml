@@ -1,0 +1,37 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: dinner_dash_development
+  username: dinner_dash
+  password: <%= Rails.application.credentials.dinner_dash_database_password %>
+  host: localhost
+
+test:
+  <<: *default
+  database: dinner_dash_test
+  username: dinner_dash
+  password: <%= Rails.application.credentials.dinner_dash_database_password %>
+  host: localhost
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: dinner_dash_production
+    username: dinner_dash
+    password: <%= Rails.application.credentials.dinner_dash_database_password %>
+  cache:
+    <<: *primary_production
+    database: dinner_dash_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: dinner_dash_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: dinner_dash_production_cable
+    migrations_paths: db/cable_migrate
