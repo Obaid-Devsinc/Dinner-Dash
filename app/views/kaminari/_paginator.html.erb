@@ -1,0 +1,29 @@
+<%# The container tag
+  - available local variables
+    current_page:  a page object for the currently displayed page
+    total_pages:   total number of pages
+    per_page:      number of items to fetch per page
+    remote:        data-remote
+    paginator:     the paginator that renders the pagination tags inside
+-%>
+
+<%= paginator.render do -%>
+  <nav class="flex justify-center items-center space-x-1 mt-3" role="navigation" aria-label="Pagination">
+
+    <%= content_tag :span, first_page_tag, class: "px-3 py-1 rounded hover:bg-gray-200 text-gray-700" unless current_page.first? %>
+
+    <%= content_tag :span, prev_page_tag, class: "px-3 py-1 rounded hover:bg-gray-200 text-gray-700" unless current_page.first? %>
+
+    <% each_page do |page| %>
+      <% if page.display_tag? %>
+        <%= content_tag :span, page_tag(page), class: "#{'bg-gray-700 text-white' if page.current?} px-3 py-1 rounded hover:bg-gray-200 text-gray-700" %>
+      <% elsif !page.was_truncated? %>
+        <span class="px-3 py-1">…</span>
+      <% end %>
+    <% end %>
+
+    <%= content_tag :span, next_page_tag, class: "px-3 py-1 rounded hover:bg-gray-200 text-gray-700" unless current_page.last? %>
+
+    <%= content_tag :span, last_page_tag, class: "px-3 py-1 rounded hover:bg-gray-200 text-gray-700" unless current_page.last? %>
+  </nav>
+<% end -%>
