@@ -14,13 +14,6 @@
     <link rel="icon" href="/logo.png" type="image/png" />
     <link rel="apple-touch-icon" href="/logo.png" />
     <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
 
     <%= stylesheet_link_tag :app, 'data-turbo-track': 'reload' %>
     <%= javascript_importmap_tags %>
@@ -28,9 +21,9 @@
 
   <body>
     <main class="font-[Poppins] text-[0.8rem]">
-      <div id="flash_messages">
+      <turbo-frame id="flash_messages">
         <%= render 'shared/flash' %>
-      </div>
+      </turbo-frame>
 
       <div class="min-h-screen relative flex bg-gray-100 overflow-x-hidden">
         <%= render 'shared/admin/sidebar' %>
