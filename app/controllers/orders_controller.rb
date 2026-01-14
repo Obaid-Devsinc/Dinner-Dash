@@ -25,6 +25,17 @@ class OrdersController < ApplicationController
 
   def create
     cart = session[:cart]
+
+    cart.each do |item_id, qty|
+      item = Item.find(item_id)
+
+      if item.retired?
+        flash[:alert] = "#{item.title} is retired. Please remove it from your cart before placing the order."
+        redirect_to cart_path
+        return
+      end
+    end
+
     order = current_user.orders.create!(
       @order_params.merge(
         total_amount: calculate_cart_total(cart)
