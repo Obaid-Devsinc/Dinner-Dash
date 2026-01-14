@@ -1,7 +1,6 @@
 class CartItemsController < ApplicationController
   include LoadCart
   def create
-    @cart_items = []
     item_id  = params[:id].to_s
     quantity = params[:quantity].to_i
 
