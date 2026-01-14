@@ -3,7 +3,7 @@ class Admin::CategoriesController < Admin::BaseController
 
   def index
     @categories = Category
-    .select(:id, :name, "COUNT(items.id) AS items_count")
+    .select(:id, :name, :slug, "COUNT(items.id) AS items_count")
     .left_joins(:items)
     .group(:id, :name)
     .page(params[:page])
@@ -55,6 +55,6 @@ class Admin::CategoriesController < Admin::BaseController
   end
 
   def find_category
-    @category = Category.find(params[:id])
+    @category = Category.find_by(slug: params[:id])
   end
 end

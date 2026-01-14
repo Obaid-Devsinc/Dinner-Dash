@@ -3,7 +3,7 @@ class Admin::ItemsController < Admin::BaseController
 
   def index
     @items = Item.includes(:category)
-    .select(:id, :title, :price, :retired, :category_id)
+    .select(:id, :title, :price, :retired, :slug, :category_id)
     .page(params[:page]).per(8)
   end
 
@@ -53,6 +53,6 @@ class Admin::ItemsController < Admin::BaseController
   end
 
   def find_item
-    @item = Item.find(params[:id])
+    @item = Item.find_by(slug: params[:id])
   end
 end

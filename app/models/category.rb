@@ -9,9 +9,9 @@ class Category < ApplicationRecord
   validates :slug, uniqueness: true, presence: true
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
-  #  def to_param
-  #   slug
-  #  end
+   def to_param
+    slug
+   end
 
   private
 

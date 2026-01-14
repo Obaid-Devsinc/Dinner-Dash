@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   def index
-    @items = Item.active.select(:id, :title, :price)
+    @items = Item.active.select(:id, :title, :price, :slug)
 
     if params[:query].present?
       query = params[:query].downcase
@@ -13,7 +13,7 @@ class ItemsController < ApplicationController
   def show
     @item = Item
     .includes(:category)
-    .select(:id, :title, :price, :description, :category_id)
-    .find_by(id: params[:id])
+    .select(:id, :title, :price, :slug, :description, :category_id)
+    .find_by(slug: params[:id])
   end
 end

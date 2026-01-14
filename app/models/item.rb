@@ -17,10 +17,9 @@ class Item < ApplicationRecord
    validates :title, presence: true, uniqueness: true
    validates :price, presence: true, numericality: { greater_than: 0 }
 
-  #  def to_param
-  #   slug
-  #  end
-
+   def to_param
+    slug
+   end
 
   private
 
