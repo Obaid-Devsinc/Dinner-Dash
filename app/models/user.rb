@@ -13,6 +13,7 @@ class User < ApplicationRecord
   scope :admin, -> { where(role: 1) }
 
   validates :name, presence: true, length: { minimum: 3, message: "Must be 3 alphabets" }
+  validates :display_name, presence: true, length: { minimum: 2, maximum: 32, message: "Must be in between 2 to 32 alphabets" }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "Must be a valid email address" }
 
   def admin?

@@ -36,10 +36,10 @@
         <%= link_to profile_path do %>
           <div class="hidden md:flex items-center gap-3">
             <div class="w-10 h-10 rounded-full overflow-hidden">
-              <%= image_tag(current_user.image.attached? ? url_for(current_user.image) : 'unknown.jpeg', alt: current_user.name) %>
+              <%= image_tag(current_user.image.attached? ? url_for(current_user.image) : 'unknown.jpeg', alt: current_user.display_name) %>
             </div>
             <div class="text-[0.8rem]">
-              <p><%= current_user.name %></p>
+              <p><%= current_user.display_name %></p>
               <p><%= current_user.email %></p>
             </div>
           </div>
