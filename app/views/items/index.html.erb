@@ -21,7 +21,7 @@
   <div class="w-full mb-10">
     <div class="w-[90%] xl:w-[80%] flex gap-2 justify-end items-center">
       <p>Filter:</p>
-      <%= form_with url: items_path, method: :get, local: true, class: "flex items-center gap-4" do %>
+      <%= form_with url: items_path, method: :get, class: "flex items-center gap-4" do %>
         <%=
           select_tag :category,
                      options_for_select([['All Categories', '']] + @categories.map { |c| [c.name, c.id] }, params[:category]),
