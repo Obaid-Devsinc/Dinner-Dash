@@ -22,12 +22,12 @@
       <h2 class="text-lg font-semibold mb-4">Order Info</h2>
       <p><span class="font-medium">Status:</span>
         <% case @order.status %>
-        <% when "pending" %>
-          <span class="text-yellow-600 font-semibold">Pending</span>
+        <% when "ordered" %>
+          <span class="text-yellow-600 font-semibold">Ordered</span>
         <% when "paid" %>
           <span class="text-green-600 font-semibold">Paid</span>
-        <% when "shipped" %>
-          <span class="text-blue-600 font-semibold">Shipped</span>
+        <% when "completed" %>
+          <span class="text-blue-600 font-semibold">Completed</span>
         <% when "cancelled" %>
           <span class="text-red-600 font-semibold">Cancelled</span>
         <% end %>

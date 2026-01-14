@@ -1,4 +1,4 @@
-<% status_text = params[:status].present? ? params[:status].capitalize : "All" %>
+<% status_text = params[:status].present? ? params[:status].capitalize : 'All' %>
 <% content_for :title, "#{status_text} Orders | Dinner Dash" %>
 
 <div class="p-4 min-h-screen">
@@ -24,7 +24,7 @@
           <th class="px-6 py-3 text-left text-gray-500 text-sm font-medium">Email</th>
           <th class="px-6 py-3 text-left text-gray-500 text-sm font-medium">Status</th>
           <th class="px-6 py-3 text-left text-gray-500 text-sm font-medium">Total</th>
-          <th class="px-6 py-3 text-left text-gray-500 text-sm font-medium">Created At</th>
+          <th class="px-6 py-3 text-left text-gray-500 text-sm font-medium">Created</th>
           <th class="px-6 py-3 text-left text-gray-500 text-sm font-medium">Actions</th>
         </tr>
       </thead>
@@ -32,29 +32,35 @@
         <% if @orders.any? %>
           <% @orders.each do |order| %>
             <tr>
-              <td class="px-6 py-6"><%= order.id %></td>
-              <td class="px-6 py-6"><%= "#{order.first_name} #{order.last_name}" %></td>
-              <td class="px-6 py-6"><%= order.email %></td>
-              <td class="px-6 py-6">
+              <td class="px-6 py-3"><%= order.id %></td>
+              <td class="px-6 py-3"><%= "#{order.first_name} #{order.last_name}" %></td>
+              <td class="px-6 py-3"><%= order.email %></td>
+              <td class="px-6 py-3 text-[0.8rem]">
                 <span
                   class="font-semibold
-          <%= order.pending? ? 'text-yellow-800' : '' %>
+          <%= order.ordered? ? 'text-yellow-800' : '' %>
           <%= order.paid? ? 'text-green-800' : '' %>
-          <%= order.shipped? ? 'text-blue-800' : '' %>
+          <%= order.completed? ? 'text-blue-800' : '' %>
           <%= order.cancelled? ? 'text-red-800' : '' %>"
                 >
                   <%= order.status.capitalize %>
                 </span>
               </td>
-              <td class="px-6 py-6">$<%= number_to_currency(order.total_amount, unit: '') %></td>
-              <td class="px-6 py-6"><%= order.created_at.strftime('%Y-%m-%d') %></td>
-              <td class="px-6 py-6 flex gap-3">
-                <%= link_to admin_order_path(order), class: "text-blue-600 hover:text-blue-800" do %>
-                  <i class="fa-regular fa-eye"></i>
+              <td class="px-6 py-3">$<%= number_to_currency(order.total_amount, unit: '') %></td>
+              <td class="px-6 py-3"><%= order.created_at.strftime('%Y-%m-%d') %></td>
+              <td class="px-6 pt-6 flex gap-3 text-[0.7rem]">
+                <%= link_to 'View', admin_order_path(order), class: 'text-blue-600 hover:text-blue-800' %>
+
+                <% if order.ordered? %>
+                  <%= link_to 'Paid', mark_paid_admin_order_path(order), data: { turbo_method: :patch, turbo_confirm: 'Are you sure?' }, class: 'text-green-700 hover:text-green-900' %>
+
+                  <%= link_to 'Cancel', cancel_admin_order_path(order), data: { turbo_method: :patch, turbo_confirm: 'Are you sure?' }, class: 'text-red-700 hover:text-red-900' %>
                 <% end %>
 
-                <%= link_to edit_admin_order_path(order), class: "text-yellow-600 hover:text-yellow-800" do %>
-                  <i class="fa-regular fa-pen-to-square"></i>
+                <% if order.paid? %>
+                  <%= link_to 'Completed', complete_admin_order_path(order), data: { turbo_method: :patch, turbo_confirm: 'Are you sure?' }, class: 'text-blue-700 hover:text-blue-900' %>
+
+                  <%= link_to 'Cancel', cancel_admin_order_path(order), data: { turbo_method: :patch, turbo_confirm: 'Are you sure?' }, class: 'text-red-700 hover:text-red-900' %>
                 <% end %>
               </td>
             </tr>

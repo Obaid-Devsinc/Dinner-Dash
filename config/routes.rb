@@ -15,6 +15,12 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index"
     resources :items, except: [ :show ]
     resources :categories, except: [ :show ]
-    resources :orders, only: [ :index, :show, :edit, :update ]
+    resources :orders, only: [ :index, :show ] do
+    member do
+      patch :cancel
+      patch :mark_paid
+      patch :complete
+    end
+  end
   end
 end

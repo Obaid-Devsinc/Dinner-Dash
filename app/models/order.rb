@@ -2,7 +2,7 @@ class Order < ApplicationRecord
   belongs_to :user
   has_many :order_items, dependent: :destroy
 
-  enum :status, { pending: "pending", paid: "paid", shipped: "shipped", cancelled: "cancelled" }
+  enum :status, { paid: "paid", ordered: "ordered", completed: "completed", cancelled: "cancelled" }
 
   default_scope { order(created_at: :desc) }
 
