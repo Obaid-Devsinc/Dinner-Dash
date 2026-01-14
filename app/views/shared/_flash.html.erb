@@ -2,9 +2,9 @@
   <div class="fixed bottom-8 right-6 space-y-2 z-50">
     <% flash.each do |type, message| %>
       <div
-        class="px-4 py-3 text-[0.8rem] rounded-lg text-white
+        class="flash-message px-4 py-3 text-[0.8rem] rounded-lg text-white
                   <%= type == 'alert' ? 'bg-red-500' : 'bg-green-500' %>
-                  shadow-lg animate-fade-in"
+                  shadow-lg"
       >
         <%= message %>
       </div>
