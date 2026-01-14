@@ -5,6 +5,7 @@
         <%= image_tag(item.image.attached? ? url_for(item.image) : 'unknown.jpeg', alt: item.title, class: 'h-full w-full hover:scale-110 transition-transform duration-300') %>
       </div>
     <% end %>
+
     <div class="flex justify-between items-center px-3 pt-5">
       <div class="text-sm">
         <p class="text-[#4D4D4D]">
@@ -17,6 +18,7 @@
           <% end %>
         </div>
       </div>
+
       <%= button_to cart_items_path(id: item.id), method: :post, data: { turbo_stream: true } do %>
         <div class="bg-[#F2F2F2] w-[35px] h-[35px] sm:w-12 sm:h-11 rounded-full flex justify-center items-center cursor-pointer">
           <%= image_tag 'bag.avif', alt: 'Cart Icon', class: 'w-5 cursor-pointer' %>
