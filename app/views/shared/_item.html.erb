@@ -11,7 +11,7 @@
         <p class="text-[#4D4D4D]">
           <%= item.title %>
         </p>
-        <p>$ <%= item.price %></p>
+        <p><%= number_to_currency(item.price, unit: "$") %></p>
         <div class="flex pt-1">
           <% 5.times do %>
             <i class="fa-solid fa-star text-yellow-300 text-[0.5rem]"></i>

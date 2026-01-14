@@ -33,7 +33,7 @@
         <% end %>
       </p>
       <p><span class="font-medium">Payment Method:</span> <%= @order.payment_method.upcase %></p>
-      <p><span class="font-medium">Total Amount:</span> $<%= number_to_currency(@order.total_amount, unit: "") %></p>
+      <p><span class="font-medium">Total Amount:</span><%= number_to_currency(@order.total_amount, unit: "$") %></p>
       <p><span class="font-medium">Created At:</span> <%= @order.created_at.strftime("%Y-%m-%d %H:%M") %></p>
     </div>
   </div>
@@ -61,8 +61,8 @@
             </td>
             <td class="px-6 py-2"><%= order_item.item.category.name %></td>
             <td class="px-6 py-2"><%= order_item.quantity %></td>
-            <td class="px-6 py-2">$<%= number_to_currency(order_item.price, unit: "") %></td>
-            <td class="px-6 py-2">$<%= number_to_currency(order_item.price * order_item.quantity, unit: "") %></td>
+            <td class="px-6 py-2"><%= number_to_currency(order_item.price, unit: "$") %></td>
+            <td class="px-6 py-2"><%= number_to_currency(order_item.price * order_item.quantity, unit: "$") %></td>
           </tr>
         <% end %>
       </tbody>

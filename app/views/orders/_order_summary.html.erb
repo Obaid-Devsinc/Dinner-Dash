@@ -11,7 +11,7 @@
     <div class="space-y-3 mb-6">
       <div class="flex justify-between">
         <span class="text-gray-600">Subtotal</span>
-        <span class="font-medium">$ <%= @cart_subtotal %></span>
+        <span class="font-medium"><%= number_to_currency(@cart_subtotal, unit: "$") %></span>
       </div>
       <div class="flex justify-between">
         <span class="text-gray-600">Shipping</span>
@@ -19,12 +19,12 @@
       </div>
       <div class="flex justify-between">
         <span class="text-gray-600">Tax - 8%</span>
-        <span class="font-medium">$ <%= @cart_tax %></span>
+        <span class="font-medium"><%= number_to_currency(@cart_tax, unit: "$") %></span>
       </div>
       <div class="border-t border-gray-300 pt-4 mt-4">
         <div class="flex justify-between items-center">
           <span class="text-xl font-bold text-gray-900">Total</span>
-          <span class="text-xl font-bold text-gray-900">$ <%= @cart_total %></span>
+          <span class="text-xl font-bold text-gray-900"><%= number_to_currency(@cart_total, unit: "$") %></span>
         </div>
       </div>
     </div>
