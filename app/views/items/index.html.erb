@@ -1,4 +1,4 @@
-<% content_for :title, "Menu Items | Dinner Dash" %>
+<% content_for :title, 'Menu Items | Dinner Dash' %>
 
 <main class="relative w-full h-[30vh] flex items-center justify-center bg-gray-800">
   <div class="absolute inset-0">
@@ -18,6 +18,20 @@
 </main>
 
 <div class="w-full min-h-[80vh] max-h-auto flex flex-wrap justify-center mt-10">
+  <div class="w-full mb-10">
+    <div class="w-[90%] xl:w-[80%] flex gap-2 justify-end items-center">
+      <p>Filter:</p>
+      <%= form_with url: items_path, method: :get, local: true, class: "flex items-center gap-4" do %>
+        <%=
+          select_tag :category,
+                     options_for_select([['All Categories', '']] + @categories.map { |c| [c.name, c.id] }, params[:category]),
+                     class: 'border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500'
+        %>
+        <%= submit_tag 'Filter', class: 'bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer' %>
+      <% end %>
+    </div>
+  </div>
+
   <% if @items.any? %>
     <div class="w-[90%] xl:w-[65%] flex flex-wrap justify-around gap-2">
       <%= render partial: 'shared/item', collection: @items %>
@@ -27,5 +41,5 @@
     </div>
   <% else %>
     <%= render 'shared/fallback', text: 'No product found' %>
-<% end %>
+  <% end %>
 </div>
