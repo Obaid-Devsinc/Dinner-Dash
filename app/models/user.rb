@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  has_one_attached :image
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
+  has_one_attached :image, dependent: :purge_later
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

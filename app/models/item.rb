@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
   belongs_to :category
-  has_one_attached :image
   has_many :order_items
+  has_one_attached :image, dependent: :purge_later
 
   before_destroy :check_for_orders
   before_validation :generate_slug, on: :create

@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
   has_many :items, dependent: :destroy
-  has_one_attached :image
+  has_one_attached :image, dependent: :purge_later
 
   before_validation :generate_slug, on: :create
 
