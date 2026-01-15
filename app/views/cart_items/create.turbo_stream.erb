@@ -1,5 +1,5 @@
 <%= turbo_stream.replace "cart_count" do %>
- <li>
+ <li id="cart_count">
 <%= link_to cart_path, class: "hover:text-gray-300 transition relative" do %>
   Cart
   <% if cart_count > 0 %>
@@ -8,7 +8,7 @@
     </span>
   <% end %>
 <% end %>
-        </li>
+    </li>
 <% end %>
 
 <%= turbo_stream.update "flash_messages" do %>
