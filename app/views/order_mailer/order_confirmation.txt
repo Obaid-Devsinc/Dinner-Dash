@@ -1,0 +1,16 @@
+Thank you for your order, <%= @order.first_name %>!
+
+Your order #<%= @order.id %> has been successfully created.
+
+Status: <%= @order.status.capitalize %>
+
+Order Details:
+<% @order.order_items.each do |oi| %>
+- <%= oi.item.title %> - Quantity: <%= oi.quantity %>
+<% end %>
+
+Total Amount: $<%= @order.total_amount %>
+
+We will notify you when your order status is updated.
+
+Thank you for choosing Dinner Dash!
