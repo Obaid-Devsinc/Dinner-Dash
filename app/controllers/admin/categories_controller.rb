@@ -3,8 +3,8 @@ class Admin::CategoriesController < Admin::BaseController
 
   def index
     @categories = Category
-    .select(:id, :name, :slug, "COUNT(items.id) AS items_count")
     .left_joins(:items)
+    .select(:id, :name, :slug, "COUNT(items.id) AS items_count")
     .group(:id, :name)
     .page(params[:page])
     .per(8)

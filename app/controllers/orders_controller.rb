@@ -7,8 +7,8 @@ class OrdersController < ApplicationController
 
   def index
     @orders = current_user.orders
-    .select("orders.*, COUNT(order_items.id) AS order_items_count")
     .left_joins(:order_items)
+    .select(:id, :status, :total_amount, :created_at, "COUNT(order_items.id) AS order_items_count")
     .group(:id)
   end
 
@@ -24,32 +24,32 @@ class OrdersController < ApplicationController
   end
 
   def create
-    cart = session[:cart]
+    cart = session[:cart] || {}
+    return redirect_to cart_path, alert: "Your cart is empty" if cart.empty?
 
-    cart.each do |item_id, qty|
-      item = Item.find(item_id)
+    item_ids = cart.keys
+    items = Item.where(id: item_ids).index_by(&:id)
 
+    items.each do |id, item|
       if item.retired?
-        flash[:alert] = "#{item.title} is retired. Please remove it from your cart before placing the order."
+        flash[:alert] = "#{item.title} is retired. Please remove it from cart before placing order."
         redirect_to cart_path
         return
       end
     end
 
-    order = current_user.orders.create!(
-      @order_params.merge(
-        total_amount: calculate_cart_total(cart)
-      )
-    )
+    subtotal = cart.sum { |item_id, qty| items[item_id.to_i].price * qty }
+    tax = (subtotal * 0.08).round(2)
+    total = subtotal + tax
 
-    cart.each do |item_id, qty|
-      item = Item.find(item_id)
-      order.order_items.create!(
-        item: item,
-        quantity: qty,
-        price: item.price
-      )
+    order = current_user.orders.create!(@order_params.merge(total_amount: total))
+
+    order_items_data = cart.map do |item_id, qty|
+      item = items[item_id.to_i]
+      { order_id: order.id, item_id: item.id, quantity: qty, price: item.price, created_at: Time.current, updated_at: Time.current }
     end
+
+    OrderItem.insert_all!(order_items_data) if order_items_data.any?
 
     OrderMailer.order_confirmation(order).deliver_later
 
@@ -59,20 +59,12 @@ class OrdersController < ApplicationController
     redirect_to order_path(order), notice: "Order placed successfully!"
   end
 
+
   private
 
   def check_cart
     cart = session[:cart]
     redirect_to cart_path if cart.empty?
-  end
-
-  def calculate_cart_total(cart)
-    subtotal = cart.sum do |item_id, qty|
-      item = Item.find(item_id)
-      item.price * qty
-    end
-    tax = (subtotal * 0.08).round(2)
-    subtotal + tax
   end
 
   def set_order_params
