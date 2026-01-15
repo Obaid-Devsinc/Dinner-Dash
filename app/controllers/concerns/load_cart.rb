@@ -26,5 +26,5 @@ module LoadCart
 
   @cart_tax = (@cart_subtotal * 0.08).round(2)
   @cart_total = @cart_subtotal + @cart_tax
-end
+  end
 end
