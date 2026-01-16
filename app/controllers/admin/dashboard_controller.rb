@@ -7,9 +7,7 @@ class Admin::DashboardController < Admin::BaseController
     @total_customers = User.customer.count
     @total_revenue = Order.where(status: [:completed]).sum(:total_amount)
     @latest_customers = User.customer
-    .left_joins(:orders)
-    .select(:id, :name, :email, :created_at, "COUNT(orders.id) AS order_count")
-    .group(:id, :name)
+    .select(:id, :name, :email, :created_at, :orders_count)
     .limit(5)
   end
 end

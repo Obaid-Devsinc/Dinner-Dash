@@ -1,5 +1,5 @@
 class Item < ApplicationRecord
-  belongs_to :category
+  belongs_to :category, counter_cache: true
   has_many :order_items
   has_one_attached :image, dependent: :purge_later
 
