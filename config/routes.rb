@@ -16,11 +16,11 @@ Rails.application.routes.draw do
     resources :items, except: [ :show ]
     resources :categories, except: [ :show ]
     resources :orders, only: [ :index, :show ] do
-    member do
-      patch :cancel
-      patch :mark_paid
-      patch :complete
-    end
-  end
+      member do
+        patch :cancel
+        patch :mark_paid
+        patch :complete
+      end
+   end
   end
 end
