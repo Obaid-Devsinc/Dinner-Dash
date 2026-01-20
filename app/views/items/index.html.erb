@@ -1,45 +1,86 @@
 <% content_for :title, 'Menu Items | Dinner Dash' %>
 
-<main class="relative w-full h-[30vh] flex items-center justify-center bg-gray-800">
-  <div class="absolute inset-0">
-    <%= image_tag 'sub_ecommerce_bg.jpeg', alt: 'E-commerce Banner', class: 'w-full h-full object-cover' %>
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-  </div>
+<% if current_user&.admin?  %>
+  <% content_for :title, 'Menu Items | Dinner Dash' %>
 
-  <div class="relative z-10 text-center text-white px-4">
-    <h1 class="text-3xl sm:text-4xl md:text-[40px] font-extrabold mb-4">
-      <% if params[:query].present? %>
-        Results For "<%= params[:query] %>"
-      <% else %>
-        Menu Items
-      <% end %>
-    </h1>
-  </div>
-</main>
-
-<div class="w-full min-h-[80vh] max-h-auto flex flex-wrap justify-center mt-10">
-  <div class="w-full mb-10">
-    <div class="w-[90%] xl:w-[80%] flex gap-2 justify-end items-center">
-      <p>Filter:</p>
-      <%= form_with url: items_path, method: :get, class: "flex items-center gap-4" do %>
-        <%=
-          select_tag :category,
-                     options_for_select([['All Categories', '']] + @categories.map { |c| [c.name, c.id] }, params[:category]),
-                     class: 'border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500'
-        %>
-        <%= submit_tag 'Filter', class: 'bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer' %>
+  <div class="p-4 min-h-screen">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-xl sm:text-2xl font-bold bruno">Menu Items</h1>
+      <%= link_to new_item_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center" do %>
+        <i class="fa-solid fa-plus mr-2"></i>
+        Add Product
       <% end %>
     </div>
-  </div>
 
-  <% if @items.any? %>
-    <div class="w-[90%] xl:w-[65%] flex flex-wrap justify-around gap-2">
-      <%= render partial: 'shared/item', collection: @items %>
+    <div class="bg-white rounded-xl overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <%= render partial: 'shared/table_header', collection: item_table_headers %>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% if @items.any? %>
+            <%= render @items %>
+          <% else %>
+            <tr>
+              <td colspan="6" class="px-6 text-center text-gray-500">
+                <%= render 'shared/fallback', text: 'No Menu Items found' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <% if @items.any? %>
+        <div class="w-full flex justify-center mt-8 text-sm">
+          <%= paginate @items %>
+        </div>
+      <% end %>
     </div>
-    <div class="w-full flex justify-center mt-8 text-sm">
-      <%= paginate @items %>
+  </div>
+<% else %>
+  <main class="relative w-full h-[30vh] flex items-center justify-center bg-gray-800">
+    <div class="absolute inset-0">
+      <%= image_tag 'sub_ecommerce_bg.jpeg', alt: 'E-commerce Banner', class: 'w-full h-full object-cover' %>
+      <div class="absolute inset-0 bg-black opacity-50"></div>
     </div>
-  <% else %>
-    <%= render 'shared/fallback', text: 'No product found' %>
-  <% end %>
-</div>
+
+    <div class="relative z-10 text-center text-white px-4">
+      <h1 class="text-3xl sm:text-4xl md:text-[40px] font-extrabold mb-4">
+        <% if params[:query].present? %>
+          Results For "<%= params[:query] %>"
+        <% else %>
+          Menu Items
+        <% end %>
+      </h1>
+    </div>
+  </main>
+
+  <div class="w-full min-h-[80vh] max-h-auto flex flex-wrap justify-center mt-10">
+    <div class="w-full mb-10">
+      <div class="w-[90%] xl:w-[80%] flex gap-2 justify-end items-center">
+        <p>Filter:</p>
+        <%= form_with url: items_path, method: :get, class: "flex items-center gap-4" do %>
+          <%=
+            select_tag :category,
+                       options_for_select([['All Categories', '']] + @categories.map { |c| [c.name, c.id] }, params[:category]),
+                       class: 'border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500'
+          %>
+          <%= submit_tag 'Filter', class: 'bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer' %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @items.any? %>
+      <div class="w-[90%] xl:w-[65%] flex flex-wrap justify-around gap-2">
+        <%= render partial: 'shared/item', collection: @items %>
+      </div>
+      <div class="w-full flex justify-center mt-8 text-sm">
+        <%= paginate @items %>
+      </div>
+    <% else %>
+      <%= render 'shared/fallback', text: 'No product found' %>
+    <% end %>
+  </div>
+<% end %>

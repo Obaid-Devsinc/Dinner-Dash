@@ -9,7 +9,7 @@
       <%= link_to oi.item.title, item_path(oi.item), class: 'text-blue-500 hover:text-blue-600' %>
     </h4>
     <p class="text-gray-600">Quantity: <%= oi.quantity %></p>
-    <p class="text-gray-600">Price per item: <%= number_to_currency(oi.price, unit: "$") %></p>
-    <p class="font-medium mt-1">Subtotal: <%= number_to_currency(oi.price * oi.quantity, unit: "$") %></p>
+    <p class="text-gray-600">Price per item: <%= number_to_currency(oi.price, unit: '$') %></p>
+    <p class="font-medium mt-1">Subtotal: <%= number_to_currency(oi.price * oi.quantity, unit: '$') %></p>
   </div>
 </div>

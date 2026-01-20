@@ -5,4 +5,25 @@ class ApplicationPolicy
     @user = user
     @record = record
   end
+
+  def public_access?
+    !user&.admin?
+  end
+
+   def admin_access?
+     user&.admin?
+   end
+
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      scope.none
+    end
+  end
 end

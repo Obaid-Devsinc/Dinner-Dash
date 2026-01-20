@@ -1,52 +1,48 @@
 class CartItemsController < ApplicationController
-  include LoadCart
+  before_action :cart_item_params
+
   def create
-    item_id  = params[:id].to_s
-    quantity = params[:quantity].to_i
+    authorize :cart_item, :create?
 
-  if session[:cart][item_id]
-    session[:cart][item_id] += quantity
-  else
-    session[:cart][item_id] = quantity
-  end
+    item_id = cart_item_params[:id].to_s
+    quantity = cart_item_params[:quantity].to_i
 
-  store_cart_cookie
-
-  respond_to do |format|
-    format.turbo_stream { flash.now[:notice] = "Item added to cart" }
-    format.html { redirect_to cart_path, notice: "Item added to cart" }
-  end
-  end
-
-  def update
-    item_id = params[:id].to_s
-    quantity = params[:quantity].to_i
-
-    if session[:cart][item_id] && quantity >= 1
+    if session[:cart][item_id]
+      session[:cart][item_id] += quantity
+    else
       session[:cart][item_id] = quantity
     end
 
     store_cart_cookie
+    flash.now[:notice] = 'Item added to cart'
+  end
 
+  def update
+    authorize :cart_item, :update?
+
+    item_id = cart_item_params[:id].to_s
+    quantity = cart_item_params[:quantity].to_i
+
+    session[:cart][item_id] = quantity if session[:cart][item_id] && quantity >= 1
+
+    store_cart_cookie
     load_cart
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to cart_path }
-    end
   end
 
   def destroy
-    item_id = params[:id].to_s
+    authorize :cart_item, :destroy?
+
+    item_id = cart_item_params[:id].to_s
     session[:cart].delete(item_id) if session[:cart][item_id]
 
     store_cart_cookie
-
     load_cart
+    flash.now[:notice] = 'Item removed from cart'
+  end
 
-    respond_to do |format|
-      format.turbo_stream { flash.now[:notice] = "Item removed from cart" }
-      format.html { redirect_to cart_path, notice: "Item removed from cart" }
-    end
+  private
+
+  def cart_item_params
+    params.permit(:id, :quantity)
   end
 end

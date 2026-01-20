@@ -1,7 +1,6 @@
 class CartsController < ApplicationController
-  include LoadCart
-
   def show
+    authorize :cart, :show?
     load_cart
   end
 end

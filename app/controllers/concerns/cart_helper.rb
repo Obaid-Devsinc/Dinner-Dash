@@ -1,24 +1,12 @@
 module CartHelper
   extend ActiveSupport::Concern
 
-  included do
-    helper_method :cart_count
-    before_action :initialize_cart
-    before_action :load_cart_from_cookie
-  end
-
-  def cart_count
-    session[:cart].values.sum
-  end
-
   def initialize_cart
     session[:cart] ||= {}
   end
 
   def load_cart_from_cookie
-    if cookies.signed[:cart].present? && session[:cart].blank?
-      session[:cart] = JSON.parse(cookies.signed[:cart])
-    end
+    session[:cart] = JSON.parse(cookies.signed[:cart]) if cookies.signed[:cart].present? && session[:cart].blank?
   end
 
   def store_cart_cookie
@@ -31,5 +19,30 @@ module CartHelper
 
   def persist_cart_before_logout
     store_cart_cookie
+  end
+
+  def load_cart
+    cart = session[:cart] || {}
+
+    @cart_items = []
+    @cart_subtotal = 0
+    @cart_tax = 0
+    @cart_total = 0
+
+    return if cart.empty?
+
+    items = Item.where(id: cart.keys)
+
+    items.each do |item|
+      qty = cart[item.id.to_s].to_i
+      subtotal = item.price * qty
+
+      @cart_items << { product: item, quantity: qty, subtotal: subtotal }
+
+      @cart_subtotal += subtotal
+    end
+
+    @cart_tax = (@cart_subtotal * 0.08).round(2)
+    @cart_total = @cart_subtotal + @cart_tax
   end
 end
