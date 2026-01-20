@@ -60,7 +60,11 @@
 
         <div class="mt-6">
           <%= button_to cart_items_path(id: @item.id), method: :post, class: 'w-full bg-black text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition-colors font-medium cursor-pointer' do %>
-            <input type="hidden" name="quantity" value="1" data-quantity-target="hidden" />
+            <%= hidden_field_tag :id, @item.id %>
+            <%= hidden_field_tag :title, @item.title %>
+            <%= hidden_field_tag :price, @item.price %>
+            <%= hidden_field_tag :description, @item.description %>
+            <%= hidden_field_tag :quantity, 1, data: { quantity_target: 'hidden' } %>
             Add to Cart
           <% end %>
         </div>

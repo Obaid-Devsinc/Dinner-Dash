@@ -2,7 +2,7 @@
 
 <% if @cart_items.any? %>
   <% @cart_items.each do |item| %>
-    <%= turbo_stream.replace "cart_item_#{item[:product].id}" do %>
+    <%= turbo_stream.replace "cart_item_#{item[:product]["id"]}" do %>
       <%= render  "carts/cart_item", item: item  %>
     <% end %>
   <% end %>

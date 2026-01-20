@@ -22,23 +22,18 @@ module CartHelper
   end
 
   def load_cart
-    cart = session[:cart] || {}
-
     @cart_items = []
     @cart_subtotal = 0
     @cart_tax = 0
     @cart_total = 0
 
-    return if cart.empty?
+    return if session[:cart].empty?
 
-    items = Item.where(id: cart.keys)
+    session[:cart].each do |_id, item_data|
+      qty = item_data['quantity'].to_i
+      subtotal = item_data['price'].to_f * qty
 
-    items.each do |item|
-      qty = cart[item.id.to_s].to_i
-      subtotal = item.price * qty
-
-      @cart_items << { product: item, quantity: qty, subtotal: subtotal }
-
+      @cart_items << { product: item_data, quantity: qty, subtotal: subtotal }
       @cart_subtotal += subtotal
     end
 

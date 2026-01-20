@@ -23,6 +23,9 @@
         <div class="bg-[#F2F2F2] w-[35px] h-[35px] sm:w-12 sm:h-11 rounded-full flex justify-center items-center cursor-pointer">
           <%= image_tag 'bag.avif', alt: 'Cart Icon', class: 'w-5 cursor-pointer' %>
         </div>
+        <%= hidden_field_tag :title, item.title %>
+        <%= hidden_field_tag :price, item.price %>
+        <%= hidden_field_tag :description, item.description %>
         <%= hidden_field_tag :quantity, 1 %>
       <% end %>
     </div>

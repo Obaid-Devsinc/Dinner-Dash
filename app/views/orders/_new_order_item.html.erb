@@ -1,12 +1,12 @@
 <div class="flex items-start gap-3 pb-4 border-b border-gray-300">
   <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
     <div class="h-full w-full bg-gray-200">
-      <%= image_tag(item[:product].image.attached? ? url_for(item[:product].image) : 'unknown.jpeg', alt: item[:product].title, class: 'h-full w-full hover:scale-110 transition-transform duration-300') %>
+      <%= image_tag('unknown.jpeg', alt: item[:product]["title"], class: 'h-full w-full hover:scale-110 transition-transform duration-300') %>
     </div>
   </div>
   <div class="flex-1">
-    <h4 class="font-medium text-gray-900"><%= item[:product].title %></h4>
+    <h4 class="font-medium text-gray-900"><%= item[:product]["title"] %></h4>
     <p class="text-gray-600">Total <%= item[:quantity] %> Item</p>
-    <p class="font-medium mt-1"><%= number_to_currency(item[:product].price, unit: '$') %></p>
+    <p class="font-medium mt-1"><%= number_to_currency(item[:product]["price"], unit: '$') %></p>
   </div>
 </div>

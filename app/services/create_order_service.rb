@@ -12,25 +12,19 @@ class CreateOrderService
   def call
     return { error: 'Cart is empty' } if cart.empty?
 
-    items = Item.where(id: cart.keys).index_by(&:id)
-
-    retired_item = items.values.find(&:retired?)
+    items_in_db = Item.where(id: cart.keys)
+    retired_item = items_in_db.find(&:retired?)
     return { error: "#{retired_item.title} is retired. Remove it from cart." } if retired_item
 
-    subtotal = cart.sum { |item_id, qty| items[item_id.to_i].price * qty }
+    subtotal = cart.sum { |_id, item| item['price'].to_f * item['quantity'].to_i }
     tax = (subtotal * TAX_RATE).round(2)
     total = subtotal + tax
 
     @order = user.orders.create!(order_params.merge(total_amount: total))
 
-    order_items_data =
-      cart.map do |item_id, qty|
-        item = items[item_id.to_i]
-        { order_id: order.id, item_id: item.id, quantity: qty, price: item.price, created_at: Time.current, updated_at: Time.current }
-      end
+    order_items_data = cart.map { |_id, item| { order_id: order.id, item_id: item['id'], quantity: item['quantity'], price: item['price'], created_at: Time.current, updated_at: Time.current } }
 
     OrderItem.insert_all!(order_items_data) if order_items_data.any?
-
     OrderMailer.order_confirmation(order).deliver_later
 
     { order: order }

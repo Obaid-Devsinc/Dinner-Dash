@@ -9,10 +9,11 @@ class OrdersController < ApplicationController
     if current_user.admin?
       authorize Order, :index_admin?
       @statuses = Order.statuses.keys
-      @orders = params[:status].present? ? Order.by_status(params[:status]).page(params[:page]) : Order.page(params[:page])
+      @orders =
+        set_page_params[:status].present? ? Order.by_status(set_page_params[:status]).page(set_page_params[:page]).per(set_page_params[:limit] || 8) : Order.page(set_page_params[:page]).per(set_page_params[:limit] || 8)
     else
       authorize Order
-      @orders = current_user.orders.with_items_count
+      @orders = current_user.orders.with_items_count.page(set_page_params[:page]).per(set_page_params[:limit] || 6)
     end
   end
 
@@ -35,7 +36,7 @@ class OrdersController < ApplicationController
 
   def create
     authorize Order
-    result = CreateOrderService.new(user: current_user, cart: session[:cart] || {}, order_params: @order_params).call
+    result = CreateOrderService.new(user: current_user, cart: session[:cart], order_params: @order_params).call
 
     if result[:error]
       redirect_to cart_path, alert: result[:error]
@@ -69,7 +70,7 @@ class OrdersController < ApplicationController
   end
 
   def set_page_params
-    params.permit(:status, :page)
+    params.permit(:status, :page, :limit)
   end
 
   def check_cart
