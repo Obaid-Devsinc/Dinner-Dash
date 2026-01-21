@@ -55,6 +55,7 @@ class ItemsController < ApplicationController
     if @item.update(item_params)
       redirect_to items_path, notice: 'Item updated successfully'
     else
+      flash.now[:alert] = @item.errors.full_messages.to_sentence
       render :edit, status: :unprocessable_entity
     end
   end

@@ -39,6 +39,7 @@ class CategoriesController < ApplicationController
     if @category.update(category_params)
       redirect_to categories_path, notice: 'Category updated successfully'
     else
+      flash.now[:alert] = @category.errors.full_messages.to_sentence
       render :edit, status: :unprocessable_entity
     end
   end

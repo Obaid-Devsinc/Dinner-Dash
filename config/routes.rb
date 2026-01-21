@@ -1,25 +1,30 @@
-Rails.application.routes.draw do
-  devise_for :users
+Rails
+  .application
+  .routes
+  .draw do
+    devise_for :users
 
-  root "home#index"
-  get "home", to: "home#index"
+    root 'home#index'
+    get 'home', to: 'home#index'
 
-  resource :profile, only: [ :show, :edit, :update ]
-  resources :items, only: [ :index, :show ]
-  resources :categories, only: [ :show ]
-  resource :cart, only: [ :show ]
-  resources :cart_items, only: [ :create, :update, :destroy ]
-  resources :orders, only: [ :index, :show, :create, :new ]
-  scope :admin do
-    get "dashboard", to: "dashboard#index", as: :admin_dashboard
-    resources :items, except: [:index, :show]
-    resources :categories, except: [:show]
-     resources :orders, only: [ :index, :show ] do
-      member do
-        patch :cancel
-        patch :mark_paid
-        patch :complete
+    resource :profile, only: %i[show edit update]
+    resource :cart, only: [:show]
+    resources :cart_items, only: %i[create update destroy]
+    resources :orders, only: %i[index show create new]
+
+    scope :admin do
+      get 'dashboard', to: 'dashboard#index', as: :admin_dashboard
+      resources :items, except: [:show]
+      resources :categories, except: [:show]
+      resources :orders, only: %i[index show] do
+        member do
+          patch :cancel
+          patch :mark_paid
+          patch :complete
+        end
       end
-   end
+    end
+    
+    resources :items, only: %i[index show]
+    resources :categories, only: [:show]
   end
-end

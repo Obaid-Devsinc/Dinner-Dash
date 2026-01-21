@@ -1,6 +1,7 @@
+
 <div class="group grow lg:grow-0 w-[47%] pb-4 sm:w-[270px] sm:h-72 border border-gray-300 rounded-xl relative overflow-hidden">
   <div class="w-full">
-    <%= link_to item_path(item) do %>
+    <%= link_to "/items/#{item.slug}" do %>
       <div class="w-full sm:h-[200px] overflow-hidden">
         <%= image_tag(item.image.attached? ? url_for(item.image) : 'unknown.jpeg', alt: item.title, class: 'h-full w-full hover:scale-110 transition-transform duration-300') %>
       </div>
