@@ -4,65 +4,17 @@
   <h1 class="text-2xl font-bold bruno mb-8">Dashboard</h1>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between">
-      <div>
-        <p class="text-gray-500 font-medium">Pending Orders</p>
-        <p class="text-2xl font-bold mt-2 text-gray-800"><%= @ordered_orders %></p>
-      </div>
-      <div class="bg-blue-100 text-blue-600 rounded-full p-4">
-        <i class="fa-regular fa-clock text-xl"></i>
-      </div>
-    </div>
+    <%= render 'stat_card', title: 'Pending Orders', value: @stats[:orders][:ordered], icon: 'fa-regular fa-clock', icon_bg: 'bg-blue-100', icon_color: 'text-blue-600' %>
 
-    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between">
-      <div>
-        <p class="text-gray-500 font-medium">Completed Orders</p>
-        <p class="text-2xl font-bold mt-2 text-gray-800"><%= @completed_orders %></p>
-      </div>
-      <div class="bg-blue-100 text-blue-600 rounded-full p-4">
-        <i class="fa-regular fa-check-circle text-xl"></i>
-      </div>
-    </div>
+    <%= render 'stat_card', title: 'Completed Orders', value: @stats[:orders][:completed], icon: 'fa-regular fa-check-circle', icon_bg: 'bg-blue-100', icon_color: 'text-blue-600' %>
 
-    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between">
-      <div>
-        <p class="text-gray-500 font-medium">Paid Orders</p>
-        <p class="text-2xl font-bold mt-2 text-gray-800"><%= @paid_orders %></p>
-      </div>
-      <div class="bg-blue-100 text-blue-600 rounded-full p-4">
-        <i class="fa-regular fa-credit-card text-xl"></i>
-      </div>
-    </div>
+    <%= render 'stat_card', title: 'Paid Orders', value: @stats[:orders][:paid], icon: 'fa-regular fa-credit-card', icon_bg: 'bg-blue-100', icon_color: 'text-blue-600' %>
 
-    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between">
-      <div>
-        <p class="text-gray-500 font-medium">Cancelled Orders</p>
-        <p class="text-2xl font-bold mt-2 text-gray-800"><%= @cancelled_orders %></p>
-      </div>
-      <div class="bg-green-100 text-green-600 rounded-full p-4">
-        <i class="fa-solid fa-xmark text-xl"></i>
-      </div>
-    </div>
+    <%= render 'stat_card', title: 'Cancelled Orders', value: @stats[:orders][:cancelled], icon: 'fa-solid fa-xmark', icon_bg: 'bg-green-100', icon_color: 'text-green-600' %>
 
-    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between">
-      <div>
-        <p class="text-gray-500 font-medium">Total Customer</p>
-        <p class="text-2xl font-bold mt-2 text-gray-800"><%= @total_customers %></p>
-      </div>
-      <div class="bg-blue-100 text-blue-600 rounded-full p-4">
-        <i class="fa-regular fa-user text-xl"></i>
-      </div>
-    </div>
+    <%= render 'stat_card', title: 'Total Customers', value: @stats[:customers][:total], icon: 'fa-regular fa-user', icon_bg: 'bg-blue-100', icon_color: 'text-blue-600' %>
 
-    <div class="bg-white rounded-xl shadow-md p-6 flex items-center justify-between">
-      <div>
-        <p class="text-gray-500 font-medium">Total Revenue</p>
-        <p class="text-2xl font-bold mt-2 text-gray-800"><%= number_to_currency(@total_revenue, unit: '$') %></p>
-      </div>
-      <div class="bg-yellow-100 text-yellow-600 rounded-full p-4">
-        <i class="fa-solid fa-dollar-sign text-xl"></i>
-      </div>
-    </div>
+    <%= render 'stat_card', title: 'Total Revenue', value: number_to_currency(@stats[:revenue][:total], unit: '$'), icon: 'fa-solid fa-dollar-sign', icon_bg: 'bg-yellow-100', icon_color: 'text-yellow-600' %>
   </div>
 
   <div class="bg-white rounded-xl shadow-md p-6">
@@ -76,7 +28,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
-          <%= render partial: 'dashboard/user', collection: @latest_customers %>
+          <%= render partial: 'dashboard/user', collection: @stats[:customers][:latest] %>
         </tbody>
       </table>
     </div>

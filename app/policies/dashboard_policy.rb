@@ -1,5 +1,5 @@
 class DashboardPolicy < ApplicationPolicy
   def index?
-    admin_access?
+    user&.admin?
   end
 end

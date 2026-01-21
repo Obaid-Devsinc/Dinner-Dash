@@ -7,11 +7,8 @@
     <% if @cart_items.any?  %>
       <div id="cart_items_container" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 space-y-3">
-          <% @cart_items.each do |item| %>
-            <%= render 'cart_item', item: item %>
-          <%end%>
+          <%= render partial: 'cart_item', collection: @cart_items, as: :item %>
         </div>
-
         <div id="order_summary_container">
           <%= render 'cart_summary' %>
         </div>

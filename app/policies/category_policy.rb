@@ -1,6 +1,6 @@
 class CategoryPolicy < ApplicationPolicy
   def index?
-    admin_access?
+    user&.admin?
   end
 
   def show?
@@ -12,11 +12,11 @@ class CategoryPolicy < ApplicationPolicy
   end
 
   def create?
-    admin_access?
+    user&.admin?
   end
 
   def update?
-    admin_access?
+    user&.admin?
   end
 
   def edit?
@@ -24,7 +24,7 @@ class CategoryPolicy < ApplicationPolicy
   end
 
   def destroy?
-    admin_access?
+    user&.admin?
   end
 
   class Scope < Scope

@@ -4,12 +4,20 @@ class DashboardController < ApplicationController
   def index
     authorize :dashboard, :index?
 
-    @ordered_orders = Order.ordered.count
-    @completed_orders = Order.completed.count
-    @paid_orders = Order.paid.count
-    @cancelled_orders = Order.cancelled.count
-    @total_customers = User.customer.count
-    @total_revenue = Order.completed.sum(:total_amount)
-    @latest_customers = User.customer.limit(5)
+    @stats = {
+      orders: {
+        ordered: Order.ordered.count,
+        completed: Order.completed.count,
+        paid: Order.paid.count,
+        cancelled: Order.cancelled.count
+      },
+      customers: {
+        total: User.customer.count,
+        latest: User.customer.limit(5)
+      },
+      revenue: {
+        total: Order.completed.sum(:total_amount)
+      }
+    }
   end
 end

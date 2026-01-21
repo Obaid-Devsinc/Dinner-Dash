@@ -11,9 +11,15 @@ class CartItemPolicy < ApplicationPolicy
     public_access?
   end
 
+  private
+
+  def public_access?
+    user.nil? || user.customer?
+  end
+
   class Scope < Scope
     def resolve
-      !user&.admin? ? scope : scope.none
+      (user.nil? || user.customer?) ? scope : scope.none
     end
   end
 end

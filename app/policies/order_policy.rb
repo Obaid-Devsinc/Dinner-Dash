@@ -1,34 +1,35 @@
 class OrderPolicy < ApplicationPolicy
+  # Admin-only actions
   def index_admin?
-    admin_access?
+    user&.admin?
   end
 
   def show_admin?
-    admin_access?
+    user&.admin?
   end
 
   def mark_paid?
-    admin_access?
+    user&.admin?
   end
 
   def complete?
-    admin_access?
+    user&.admin?
   end
 
   def cancel?
-    admin_access?
+    user&.admin?
   end
 
   def index?
-    public_access?
+    user.present? && (user.admin? || user.customer?)
   end
 
   def show?
-    public_access? && record.user_id == user.id
+    user.customer? && record.user_id == user.id
   end
 
   def create?
-    public_access?
+    user.customer?
   end
 
   def new?
@@ -37,6 +38,8 @@ class OrderPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
+      return scope.none unless user.present?
+
       user&.admin? ? scope.all : scope.where(user_id: user.id)
     end
   end

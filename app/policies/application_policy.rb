@@ -7,7 +7,7 @@ class ApplicationPolicy
   end
 
   def public_access?
-    !user&.admin?
+    user.nil? || user.customer?
   end
 
    def admin_access?

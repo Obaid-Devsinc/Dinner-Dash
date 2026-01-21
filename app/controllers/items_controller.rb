@@ -16,7 +16,7 @@ class ItemsController < ApplicationController
 
       if params[:query].present?
         query = params[:query].downcase
-        @items = @items.where('LOWER(title) LIKE ?', "%#{query}%")
+        @items = @items.search_by_title(query)
       end
 
       @items = @items.where(category_id: params[:category]) if params[:category].present?

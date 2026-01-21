@@ -1,6 +1,6 @@
 class CartPolicy < ApplicationPolicy
   def show?
-    public_access?
+    user.nil? || user.customer?
   end
 
   class Scope < Scope

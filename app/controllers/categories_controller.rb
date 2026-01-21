@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  LIMIT = 8
   before_action :set_page_params, only: [:index]
   before_action :authenticate_user!, except: [:show]
   before_action :find_category, only: %i[show edit update destroy]
@@ -6,7 +7,7 @@ class CategoriesController < ApplicationController
   after_action :verify_policy_scoped, only: [:index]
 
   def index
-    @categories = policy_scope(Category).page(set_page_params[:page]).per(set_page_params[:limit])
+    @categories = policy_scope(Category).page(set_page_params[:page]).per(set_page_params[:limit] || LIMIT)
     authorize Category
   end
 
@@ -58,7 +59,7 @@ class CategoriesController < ApplicationController
   end
 
   def set_page_params
-    params.permit(:limit, :page).tap { |whitelisted| whitelisted[:limit] ||= 8 }
+    params.permit(:limit, :page)
   end
 
   def find_category

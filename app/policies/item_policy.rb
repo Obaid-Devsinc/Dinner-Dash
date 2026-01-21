@@ -8,7 +8,7 @@ class ItemPolicy < ApplicationPolicy
   end
 
   def create?
-    admin_access?
+    user&.admin?
   end
 
   def new?
@@ -16,7 +16,7 @@ class ItemPolicy < ApplicationPolicy
   end
 
   def update?
-    admin_access?
+    user&.admin?
   end
 
   def edit?
@@ -24,12 +24,16 @@ class ItemPolicy < ApplicationPolicy
   end
 
   def destroy?
-    admin_access?
+    user&.admin?
   end
 
   class Scope < Scope
     def resolve
-      user&.admin? ? scope.all : scope.active
+      if user&.admin?
+        scope.all
+      else
+        scope.active
+      end
     end
   end
 end

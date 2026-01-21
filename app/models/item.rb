@@ -6,26 +6,26 @@ class Item < ApplicationRecord
   before_destroy :check_for_orders
   before_validation :generate_slug, on: :create
 
+  default_scope { order(created_at: :desc) }
+  scope :active, -> { where(retired: false) }
+  scope :retired, -> { where(retired: true) }
+  scope :search_by_title, ->(query) { where('LOWER(title) LIKE ?', "%#{query.downcase}%") }
 
-   default_scope { order(created_at: :desc) }
-   scope :active, -> { where(retired: false) }
-   scope :retired, -> { where(retired: true) }
+  validates :category, presence: true
+  validates :description, presence: true
+  validates :slug, uniqueness: true, presence: true
+  validates :title, presence: true, uniqueness: true
+  validates :price, presence: true, numericality: { greater_than: 0 }
 
-   validates :category, presence: true
-   validates :description, presence: true
-   validates :slug, uniqueness: true, presence: true
-   validates :title, presence: true, uniqueness: true
-   validates :price, presence: true, numericality: { greater_than: 0 }
-
-   def to_param
+  def to_param
     slug
-   end
+  end
 
   private
 
   def check_for_orders
     if order_items.exists?
-      errors.add(:base, "Cannot delete an item that has existing orders")
+      errors.add(:base, 'Cannot delete an item that has existing orders')
       throw :abort
     end
   end

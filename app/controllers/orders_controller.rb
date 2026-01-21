@@ -1,4 +1,5 @@
 class OrdersController < ApplicationController
+  LIMIT = 8
   before_action :set_page_params, only: [:index]
   before_action :authenticate_user!
   before_action :check_cart, only: %i[new create]
@@ -10,7 +11,7 @@ class OrdersController < ApplicationController
       authorize Order, :index_admin?
       @statuses = Order.statuses.keys
       @orders =
-        set_page_params[:status].present? ? Order.by_status(set_page_params[:status]).page(set_page_params[:page]).per(set_page_params[:limit] || 8) : Order.page(set_page_params[:page]).per(set_page_params[:limit] || 8)
+        set_page_params[:status].present? ? Order.by_status(set_page_params[:status]).page(set_page_params[:page]).per(set_page_params[:limit] || LIMIT) : Order.page(set_page_params[:page]).per(set_page_params[:limit] || 8)
     else
       authorize Order
       @orders = current_user.orders.with_items_count.page(set_page_params[:page]).per(set_page_params[:limit] || 6)
@@ -27,7 +28,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # Customer only
   def new
     authorize Order
     load_cart
