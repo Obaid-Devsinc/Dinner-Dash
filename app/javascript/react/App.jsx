@@ -6,10 +6,14 @@ function App() {
   return <Cart/>
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function mountReact() {
   const container = document.getElementById("root");
   if (container) {
     const root = ReactDOM.createRoot(container);
     root.render(<App />);
   }
-});
+}
+
+document.addEventListener("DOMContentLoaded", mountReact);
+
+document.addEventListener("turbo:load", mountReact);

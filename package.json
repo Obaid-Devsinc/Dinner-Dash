@@ -1,7 +1,7 @@
 {
   "scripts": {
- "build:react": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds",
-"build:react:watch": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds --watch"
+    "build:react": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds",
+    "build:react:watch": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds --watch"
   },
   "devDependencies": {
     "@prettier/plugin-ruby": "^1.6.1",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",
+    "axios": "^1.13.2",
     "esbuild": "^0.27.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

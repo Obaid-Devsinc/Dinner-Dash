@@ -35,6 +35,12 @@ class CartItemsController < ApplicationController
 
     store_cart_cookie
     load_cart
+
+    cart_data = { items: @cart_items, subtotal: @cart_subtotal.round(2), tax: @cart_tax.round(2), total: @cart_total.round(2) }
+
+    respond_to do |format|
+      format.json { render json: cart_data }
+    end
   end
 
   def destroy
@@ -43,7 +49,12 @@ class CartItemsController < ApplicationController
     session[:cart].delete(cart_item_params[:id].to_s)
     store_cart_cookie
     load_cart
-    flash.now[:notice] = 'Item removed from cart'
+
+    cart_data = { items: @cart_items, subtotal: @cart_subtotal.round(2), tax: @cart_tax.round(2), total: @cart_total.round(2) }
+
+    respond_to do |format|
+      format.json { render json: cart_data }
+    end
   end
 
   private
