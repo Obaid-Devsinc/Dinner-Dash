@@ -18,9 +18,9 @@
   <li class="relative flex items-center gap-3" id="cart_count">
     <%= link_to cart_path, class: "hidden md:block hover:text-gray-300 transition relative" do %>
       Cart
-      <% if @cart_items.sum { |i| i[:quantity] } > 0 %>
+      <% if @cart_items.sum { |i| i[:product]["quantity"] } > 0 %>
         <span class="absolute -top-2 -right-4 bg-red-600 text-white text-xs font-semibold w-6 h-6 rounded-full flex items-center justify-center">
-          <%= @cart_items.sum { |i| i[:quantity] } %>
+          <%= @cart_items.sum { |i| i[:product]["quantity"] } %>
         </span>
       <% end %>
     <% end %>

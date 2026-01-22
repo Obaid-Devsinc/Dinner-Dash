@@ -13,6 +13,7 @@ gem "devise"
 gem "pundit"
 gem "faker"
 gem "kaminari"
+gem "jsbundling-rails"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

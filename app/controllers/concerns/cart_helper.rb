@@ -33,7 +33,7 @@ module CartHelper
       qty = item_data['quantity'].to_i
       subtotal = item_data['price'].to_f * qty
 
-      @cart_items << { product: item_data, quantity: qty, subtotal: subtotal }
+      @cart_items << { product: item_data, subtotal: subtotal }
       @cart_subtotal += subtotal
     end
 
