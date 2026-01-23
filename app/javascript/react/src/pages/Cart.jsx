@@ -14,6 +14,14 @@ function Cart() {
 
   const BASEURL = "http://127.0.0.1:3000";
 
+  function dispatchEvent(items) {
+     const quantity = items?.reduce((total, item) => {
+    return total + (item.product?.quantity || 0);
+  }, 0);
+
+    window.dispatchEvent(new CustomEvent("cartCountUpdated", { detail: quantity }));
+  }
+
   async function fetchCartItems() {
     try {
       const { data } = await axios.get(`${BASEURL}/cart.json`);
@@ -26,8 +34,10 @@ function Cart() {
   async function onUpdateQuantity(id, quantity) {
     try {
       if (quantity < 1) return;
-      await axios.patch(`${BASEURL}/cart_items/${id}.json`, { quantity });
-      fetchCartItems();
+      const { data } = await axios.patch(`${BASEURL}/cart_items/${id}.json`, { id, quantity }, { headers: { Accept: "application/json" } });
+      setCartItems(data);
+
+      dispatchEvent(data.items);
     } catch (error) {
       console.error("Error updating quantity:", error);
     }
@@ -38,8 +48,10 @@ function Cart() {
     if (!confirmed) return;
 
     try {
-      const { data } = await axios.delete(`${BASEURL}/cart_items/${id}.json`);
+      const { data } = await axios.delete(`${BASEURL}/cart_items/${id}.json`, {}, { headers: { Accept: "application/json" } });
       setCartItems(data);
+
+      dispatchEvent(data.items);
     } catch (error) {
       console.error("Error removing item:", error);
     }

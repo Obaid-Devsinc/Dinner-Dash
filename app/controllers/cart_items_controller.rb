@@ -60,6 +60,7 @@ class CartItemsController < ApplicationController
   private
 
   def cart_item_params
+    p params
     params.permit(:id, :quantity, :title, :price, :description)
   end
 end
