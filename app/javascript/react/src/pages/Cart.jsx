@@ -1,85 +1,82 @@
 import React, { useEffect, useState } from "react";
 import Fallback from "../components/Fallback";
-import OrderSummary from "../components/CartSummary";
 import CartItem from "../components/CartItem";
-import axios from "axios";
-
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-
-axios.defaults.headers.common["X-CSRF-Token"] = csrfToken;
-axios.defaults.headers.common["Accept"] = "application/json";
+import OrderSummary from "../components/CartSummary";
+import { dispatchCartCount } from "../utils/cartEvents.js";
+import { fetchCartItems, updateCartItemQuantity, removeCartItem } from "../services/cartService.js";
 
 function Cart() {
-  const [cartItems, setCartItems] = useState({ items: [], subtotal: 0, tax: 0, total: 0 });
+  const [cartItems, setCartItems] = useState({
+    items: [],
+    subtotal: 0,
+    tax: 0,
+    total: 0
+  });
 
-  const BASEURL = "http://127.0.0.1:3000";
-
-  function dispatchEvent(items) {
-     const quantity = items?.reduce((total, item) => {
-    return total + (item.product?.quantity || 0);
-  }, 0);
-
-    window.dispatchEvent(new CustomEvent("cartCountUpdated", { detail: quantity }));
-  }
-
-  async function fetchCartItems() {
+  const loadCart = async () => {
     try {
-      const { data } = await axios.get(`${BASEURL}/cart.json`);
+      const data = await fetchCartItems();
       setCartItems(data);
-    } catch (error) {
-      console.error("Error fetching cart items:", error);
+      dispatchCartCount(data.items);
+    } catch (err) {
+      console.error("Error fetching cart:", err);
     }
-  }
+  };
 
-  async function onUpdateQuantity(id, quantity) {
+  const onUpdateQuantity = async (id, quantity) => {
+    if (quantity < 1) return;
     try {
-      if (quantity < 1) return;
-      const { data } = await axios.patch(`${BASEURL}/cart_items/${id}.json`, { id, quantity }, { headers: { Accept: "application/json" } });
+      const data = await updateCartItemQuantity(id, quantity);
       setCartItems(data);
-
-      dispatchEvent(data.items);
-    } catch (error) {
-      console.error("Error updating quantity:", error);
+      dispatchCartCount(data.items);
+    } catch (err) {
+      console.error("Error updating quantity:", err);
     }
-  }
+  };
 
-  async function onRemove(id) {
-    const confirmed = window.confirm("Are you sure?");
-    if (!confirmed) return;
-
+  const onRemove = async (id) => {
+    if (!window.confirm("Are you sure?")) return;
     try {
-      const { data } = await axios.delete(`${BASEURL}/cart_items/${id}.json`, {}, { headers: { Accept: "application/json" } });
+      const data = await removeCartItem(id);
       setCartItems(data);
-
-      dispatchEvent(data.items);
-    } catch (error) {
-      console.error("Error removing item:", error);
+      dispatchCartCount(data.items);
+    } catch (err) {
+      console.error("Error removing item:", err);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchCartItems();
+    loadCart();
   }, []);
+
+  if (!cartItems.items.length) {
+    return (
+      <section className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 flex justify-center">
+        <Fallback />
+      </section>
+    );
+  }
 
   return (
     <section className="min-h-screen py-8 sm:py-12 px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
-        {cartItems.items.length > 0 ? (
-          <div id="cart_items_container" className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-3">
-              {cartItems.items.map((item) => (
-                <CartItem key={item.product.id} item={item} onUpdateQuantity={onUpdateQuantity} onRemove={onRemove} />
-              ))}
-            </div>
-            <div id="order_summary_container">
-              <OrderSummary subtotal={cartItems.subtotal} tax={cartItems.tax} total={cartItems.total} />
-            </div>
-          </div>
-        ) : (
-          <div className="flex justify-center">
-            <Fallback />
-          </div>
-        )}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-3">
+          {cartItems.items.map((item) => (
+            <CartItem
+              key={item.product.id}
+              item={item}
+              onUpdateQuantity={onUpdateQuantity}
+              onRemove={onRemove}
+            />
+          ))}
+        </div>
+        <div>
+          <OrderSummary
+           subtotal={cartItems.subtotal}
+           tax={cartItems.tax}
+           total={cartItems.total}
+           />
+        </div>
       </div>
     </section>
   );

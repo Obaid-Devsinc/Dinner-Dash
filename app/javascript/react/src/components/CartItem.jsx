@@ -52,8 +52,6 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
               </button>
             </div>
           </div>
-
-          {/* Subtotal */}
           <p className="font-bold text-gray-900 text-lg">
             ${(product.price * product.quantity).toFixed(2)}
           </p>
