@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "build:react": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds",
-    "build:react:watch": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds --watch"
+    "build:react": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds/App.js",
+    "build:react:watch": "esbuild app/javascript/react/App.jsx --bundle --sourcemap --outfile=app/assets/builds/App.js --watch"
   },
   "devDependencies": {
     "@prettier/plugin-ruby": "^1.6.1",

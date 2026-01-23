@@ -10,7 +10,7 @@
           <%= link_to cart_path, class: "block hover:text-gray-300 transition relative" do %>
             Cart
             <% if cart_count > 0 %>
-              <span class="absolute -top-2 -right-4 bg-red-600 text-white text-xs font-semibold w-6 h-6 rounded-full flex items-center justify-center">
+              <span id="navbar-cart-count" class="absolute -top-2 -right-4 bg-red-600 text-white text-xs font-semibold w-6 h-6 rounded-full flex items-center justify-center">
                 <%= cart_count %>
               </span>
             <% end %>

@@ -15,5 +15,4 @@ function mountReact() {
 }
 
 document.addEventListener("DOMContentLoaded", mountReact);
-
 document.addEventListener("turbo:load", mountReact);
