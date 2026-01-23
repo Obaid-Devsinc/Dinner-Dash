@@ -1,16 +1,11 @@
 <div align="center">
     <a href="https://metrohrms.site">
-  <img src="https://metrohrms.site/metro.png" width="128px" />
+  <img src="https://metrohrms.site/metro.png" width="128px"  />
     </a>
     <h1><i>Dinner Dash</i></h1>
     <p align="center">
          <p><i>Ecommerce Platform | Online Ordering</i></p>
     </p>
-
-
-```
- Give a Star ⭐️ & Fork to this project ... Happy coding! 🤩`
-```
 
 *Dinner Dash is an intuitive online ecommerce platform for a restaurant to facilitate online ordering and enhance the customer experience. Users can browse menus, place orders, and track order status in real-time. Admins can manage items, categories, and orders efficiently.*
 
